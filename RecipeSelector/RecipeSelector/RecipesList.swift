@@ -8,39 +8,100 @@
 
 import UIKit
 
-class RecipesList: UITableViewController {
-
+class RecipesList: UITableViewController, UISearchResultsUpdating {
+    
+    private let searchController = UISearchController(searchResultsController: nil)
+    private var recipesArray: [String] = ["LOL", "Kek", "cheburek"]
+    private var searchResults = [String]()
+        
+    private func filterRecipes(for searchText: String) {
+           searchResults = recipesArray.filter({ (recipe: String) -> Bool in
+               return recipe.lowercased().contains(searchText.lowercased())
+           })
+           tableView.reloadData()
+       }
+    
+    private var searchBarIsEmpty: Bool {
+        guard let text = searchController.searchBar.text else { return false }
+        return text.isEmpty
+    }
+    
+    private var isFiltering: Bool {
+        return searchController.isActive && !searchBarIsEmpty
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        filterRecipes(for: searchController.searchBar.text ?? "")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.dataSource = self
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        searchController.searchResultsUpdater = self
+        tableView.tableHeaderView = searchController.searchBar
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Поиск по рецептам..."
+        definesPresentationContext = true
     }
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+         if searchController.isActive && searchController.searchBar.text != "" {
+                   return searchResults.count
+               } else { return recipesArray.count }
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Recipe", for: indexPath)
+        
+        if searchController.isActive && searchController.searchBar.text != "" {
+            cell.textLabel?.text = searchResults[indexPath.row]
+        } else {
+            cell.textLabel?.text = recipesArray[indexPath.row]
+        }
         return cell
     }
-    */
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        /*let data = recipesArray[indexPath.row]
+        let destinationVC = FullRecipe()
+        destinationVC.verificationId = data
+        destinationVC.performSegue(withIdentifier: "showRecipeSegue", sender: self)
+        */
+        /*let row = indexPath.row
+          print("Row: \(row)")
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main) // Создаем константу с нашим Storyboard.
+        let destination = storyboard.instantiateViewController(withIdentifier: "FullRecipe") // Создаём направление (где FullRecipe - Storyboard ID).
+
+        if(row == 1) {
+            
+                    navigationController?.pushViewController(destination, animated: false) // pushViewController - то, без чего решения бы небыло. destination (в скобках) - направление которое мы ранее указывали).
+                }*/
+    }
+    
+    // MARK: - Navigation
+    
+   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if segue.identifier == "showRecipeSegue" {
+            if let indexPath = self.tableView.indexPathForSelectedRow {
+                let verificationId: String
+                
+                if isFiltering {
+                    verificationId = self.searchResults[indexPath.row]
+                } else {
+                    verificationId = self.recipesArray[indexPath.row]
+                }
+                let destinationVC = segue.destination as! FullRecipe
+                destinationVC.verificationId = verificationId
+            }
+        }
+    }
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -77,14 +138,6 @@ class RecipesList: UITableViewController {
     }
     */
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
+
+

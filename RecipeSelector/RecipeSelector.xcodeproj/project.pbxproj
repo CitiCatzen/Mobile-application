@@ -16,6 +16,7 @@
 		AC32FB9E2357AAE60042CBCB /* FavoriteRecipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC32FB9D2357AAE60042CBCB /* FavoriteRecipes.swift */; };
 		AC32FBA02357AB110042CBCB /* RecipesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC32FB9F2357AB110042CBCB /* RecipesList.swift */; };
 		AC32FBA2235919F00042CBCB /* ProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC32FBA1235919F00042CBCB /* ProductModel.swift */; };
+		ACA31AC4236640390004824D /* FullRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA31AC3236640390004824D /* FullRecipe.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		AC32FB9D2357AAE60042CBCB /* FavoriteRecipes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRecipes.swift; sourceTree = "<group>"; };
 		AC32FB9F2357AB110042CBCB /* RecipesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesList.swift; sourceTree = "<group>"; };
 		AC32FBA1235919F00042CBCB /* ProductModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductModel.swift; sourceTree = "<group>"; };
+		ACA31AC3236640390004824D /* FullRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullRecipe.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				AC32FBA1235919F00042CBCB /* ProductModel.swift */,
 				AC32FB9B2357A32C0042CBCB /* ProductList.swift */,
 				AC32FB9F2357AB110042CBCB /* RecipesList.swift */,
+				ACA31AC3236640390004824D /* FullRecipe.swift */,
 				AC32FB9D2357AAE60042CBCB /* FavoriteRecipes.swift */,
 				AC32FB8D2357A0BF0042CBCB /* Main.storyboard */,
 				AC32FB902357A0BF0042CBCB /* Assets.xcassets */,
@@ -151,6 +154,7 @@
 				AC32FBA2235919F00042CBCB /* ProductModel.swift in Sources */,
 				AC32FB882357A0BF0042CBCB /* AppDelegate.swift in Sources */,
 				AC32FBA02357AB110042CBCB /* RecipesList.swift in Sources */,
+				ACA31AC4236640390004824D /* FullRecipe.swift in Sources */,
 				AC32FB8A2357A0BF0042CBCB /* SceneDelegate.swift in Sources */,
 				AC32FB9E2357AAE60042CBCB /* FavoriteRecipes.swift in Sources */,
 			);

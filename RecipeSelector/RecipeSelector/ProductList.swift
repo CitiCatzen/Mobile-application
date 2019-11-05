@@ -9,14 +9,24 @@
 import UIKit
 
 class ProductList: UITableViewController, UISearchResultsUpdating {
-    
+
+    var checkMarkArrat: [String]?
+
     private let searchController = UISearchController(searchResultsController: nil)
     private let productsArray: [String] = ["Onion", "Milk", "Apple", "Pineapple",
-                        "egg", "potato", "Potetor", "potetonator" ]
+                        "egg", "potato", "Potetor", "potetonator", "Chlen" ]
     private var searchResults = [String]()
     
+    private var searchBarIsEmpty: Bool {
+        guard let text = searchController.searchBar.text else { return false }
+        return text.isEmpty
+    }
     
-    func filterProducts(for searchText: String) {
+    private var isFiltering: Bool {
+        return searchController.isActive && !searchBarIsEmpty
+    }
+
+    private func filterProducts(for searchText: String) {
         searchResults = productsArray.filter({ (product: String) -> Bool in
             return product.lowercased().contains(searchText.lowercased())
         })
@@ -33,6 +43,7 @@ class ProductList: UITableViewController, UISearchResultsUpdating {
         tableView.dataSource = self
 
         searchController.searchResultsUpdater = self
+        searchController.searchBar.placeholder = "Поиск по продуктам..."
         tableView.tableHeaderView = searchController.searchBar // добавляет searchBar как заголовочный элемент в таблице, а не как одну из ячеек в tableView. (Встраивает панель поиска в панель навигации и позволяет её в принципе отображать на экране)
         searchController.obscuresBackgroundDuringPresentation = false //Требует не скрывать и оставлять активным tableView при использовании searchBar
         definesPresentationContext = true // отпускает строку поиска при смене экрана
@@ -70,12 +81,19 @@ class ProductList: UITableViewController, UISearchResultsUpdating {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if tableView.cellForRow(at: indexPath)?.accessoryType == UITableViewCell.AccessoryType.checkmark {
+
+        if tableView.cellForRow(at: indexPath)?.accessoryType == UITableViewCell.AccessoryType.detailDisclosureButton {
             tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCell.AccessoryType.none
+            
         } else {
-            tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCell.AccessoryType.checkmark
+            tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCell.AccessoryType.detailDisclosureButton
+            print(indexPath.row)
+            print(productsArray[indexPath.row])
         }
     }
+
+    
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -111,15 +129,13 @@ class ProductList: UITableViewController, UISearchResultsUpdating {
     }
     */
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    /*override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-    }
-    */
-
+    }*/
+    
 }
  

@@ -9,10 +9,15 @@
 import UIKit
 
 class FullRecipe: UIViewController {
-
+    
+    var verificationId: String?
+    
+    
+    @IBOutlet weak var Label: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        Label.text = verificationId
         // Do any additional setup after loading the view.
     }
     
