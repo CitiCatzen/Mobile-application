@@ -1,24 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/background"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
+
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="СПИСОК РЕЦЕПТОВ"
-        android:layout_gravity="center_horizontal">
-    </TextView>
+        android:text="хватает ингредиентов:"
+        android:textColor="@color/design_default_color_primary_dark"
+        android:textSize="20dp" />
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/scroll">
+        android:layout_height="wrap_content">
+
         <LinearLayout
-            android:id="@+id/linLayout"
+            android:id="@+id/lin_enough"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
     </ScrollView>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_color"
+        android:textSize="20dp"
+        android:text="не хватает ингредиентов:" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/lin_not_enough"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
 </LinearLayout>
