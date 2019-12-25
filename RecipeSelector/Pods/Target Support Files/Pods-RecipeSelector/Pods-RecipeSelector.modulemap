@@ -1,0 +1,6 @@
+framework module Pods_RecipeSelector {
+  umbrella header "Pods-RecipeSelector-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -11,7 +11,7 @@ import UIKit
 class RecipesList: UITableViewController, UISearchResultsUpdating {
     
     private let searchController = UISearchController(searchResultsController: nil)
-    private var recipesArray: [String] = ["LOL", "Kek", "cheburek"]
+    private var recipesArray = Database.shared.recipesResult
     private var searchResults = [String]()
         
     private func filterRecipes(for searchText: String) {

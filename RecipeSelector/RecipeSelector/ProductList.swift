@@ -7,15 +7,21 @@
 //
 
 import UIKit
+import SQLite
+
 
 class ProductList: UITableViewController, UISearchResultsUpdating {
-
-    var checkMarkArrat: [String]?
-
+    var db: [String] = Database.shared.ingredientsResult
+    
+    var checkMarkArray: [String]?
+    var ingredientsResult: [String] = []
+    
     private let searchController = UISearchController(searchResultsController: nil)
-    private let productsArray: [String] = ["Onion", "Milk", "Apple", "Pineapple",
-                        "egg", "potato", "Potetor", "potetonator", "Chlen" ]
-    private var searchResults = [String]()
+    var arr: [String] = []
+    lazy var productsArray: [ProductModel] = []
+    
+    
+    private var searchResults = [ProductModel]()
     
     private var searchBarIsEmpty: Bool {
         guard let text = searchController.searchBar.text else { return false }
@@ -26,12 +32,19 @@ class ProductList: UITableViewController, UISearchResultsUpdating {
         return searchController.isActive && !searchBarIsEmpty
     }
 
+//    private func filterProducts(for searchText: String) {
+//        searchResults = productsArray.filter({ (product: String) -> Bool in
+//            return product.lowercased().contains(searchText.lowercased())
+//        })
+//        tableView.reloadData()
+//    }
+    
     private func filterProducts(for searchText: String) {
-        searchResults = productsArray.filter({ (product: String) -> Bool in
-            return product.lowercased().contains(searchText.lowercased())
-        })
-        tableView.reloadData()
-    }
+        searchResults = productsArray.filter{ (product: ProductModel) -> Bool in
+            return product.name.lowercased().contains(searchText.lowercased())
+        }
+           tableView.reloadData()
+       }
     
     func updateSearchResults(for searchController: UISearchController) {
         filterProducts(for: searchController.searchBar.text ?? "")
@@ -39,8 +52,16 @@ class ProductList: UITableViewController, UISearchResultsUpdating {
 
     
     override func viewDidLoad() {
+
+
         super.viewDidLoad()
         tableView.dataSource = self
+
+        for i in 0..<db.count {
+            let model = ProductModel.
+            productsArray.append(model)
+        }
+
 
         searchController.searchResultsUpdater = self
         searchController.searchBar.placeholder = "Поиск по продуктам..."
@@ -68,28 +89,44 @@ class ProductList: UITableViewController, UISearchResultsUpdating {
         } else { return productsArray.count }
     }
 
+    var selectedProducts: String? = nil
+    var selectedProductsIndex: Int? = nil
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Product", for: indexPath)
+        let cell: ProductModel = tableView.dequeueReusableCell(withIdentifier: "Product", for: indexPath) as! ProductModel
         
         if searchController.isActive && searchController.searchBar.text != "" {
-            cell.textLabel?.text = searchResults[indexPath.row]
+            cell.textLabel?.text = searchResults[indexPath.row].name
         } else {
-            cell.textLabel?.text = productsArray[indexPath.row]
+            cell.textLabel?.text = productsArray[indexPath.row].name
         }
+        
+        if indexPath.row == selectedProductsIndex {
+            cell.accessoryType = .checkmark
+        } else {
+            cell.accessoryType = .none
+        }
+        
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        if tableView.cellForRow(at: indexPath)?.accessoryType == UITableViewCell.AccessoryType.detailDisclosureButton {
+    if tableView.cellForRow(at: indexPath)?.accessoryType == UITableViewCell.AccessoryType.detailDisclosureButton {
             tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCell.AccessoryType.none
             
         } else {
             tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCell.AccessoryType.detailDisclosureButton
             print(indexPath.row)
-            print(productsArray[indexPath.row])
+        print(productsArray[indexPath.row])
         }
+    
+    selectedProductsIndex = indexPath.row
+    selectedProducts = productsArray[indexPath.row].name
+    
+    let cell = tableView.cellForRow(at: indexPath)
+    cell?.accessoryType = .checkmark
+    
     }
 
     
