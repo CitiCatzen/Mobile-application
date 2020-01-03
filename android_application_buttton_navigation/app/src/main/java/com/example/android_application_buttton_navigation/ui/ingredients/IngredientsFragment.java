@@ -8,10 +8,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -23,14 +25,14 @@ import java.util.ArrayList;
 
 
 
-public class IngredientsFragment extends Fragment implements View.OnClickListener, KeyEvent.Callback {
+public class IngredientsFragment extends Fragment implements View.OnClickListener, TextView.OnEditorActionListener {
 
     final String LOG_TAG="myLogs";
     Button btnChecked;
     ListView lvMain;
     EditText ingredientName;
     public static ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
-    public ArrayList<String> name = new ArrayList<String>();
+
     ArrayAdapter<String> adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -41,16 +43,13 @@ public class IngredientsFragment extends Fragment implements View.OnClickListene
         btnChecked=root.findViewById(R.id.btnChecked);
         btnChecked.setOnClickListener(this);
         ingredientName = root.findViewById(R.id.ingredientName);
+        ingredientName.setOnEditorActionListener(this);
         ingredients = MainActivity.getIngredients();
         pageRefresh();
         return root;
     }
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        pageRefresh();
-        return false;
-    }
+
 
     public void onClick(View v){
         ArrayList<String>itemToRemove = new ArrayList<String>();
@@ -70,14 +69,38 @@ public class IngredientsFragment extends Fragment implements View.OnClickListene
         pageRefresh();
     }
 
-    private void pageRefresh(){
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_SEARCH){
+                pageRefresh(ingredientName.getText().toString());
+            return true;
+        }
+        return false;
+    }
 
+    private void pageRefresh(){
+        ArrayList<String> name = new ArrayList<String>();
         lvMain.setAdapter(null);
         for(int i = 0; i<ingredients.size(); i++){
 
-            if(!ingredients.get(i).getIsExist() && (ingredients.get(i).getName().contains(ingredientName.getText().toString()))) {
+            if(!ingredients.get(i).getIsExist()) {
                 name.add(ingredients.get(i).getName());
             }
+
+        }
+        adapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_multiple_choice, name);
+        lvMain.setAdapter(adapter);
+    }
+
+    private void pageRefresh(String ingredientName){
+        ArrayList<String> name = new ArrayList<String>();
+        lvMain.setAdapter(null);
+        for(int i = 0; i<ingredients.size(); i++){
+
+            if(!ingredients.get(i).getIsExist() && (ingredients.get(i).getName().contains(ingredientName))) {
+                name.add(ingredients.get(i).getName());
+            }
+
         }
         adapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_multiple_choice, name);
         lvMain.setAdapter(adapter);
@@ -91,20 +114,5 @@ public class IngredientsFragment extends Fragment implements View.OnClickListene
         return  key;
     }
 
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return false;
-    }
-
-    @Override
-    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-        return false;
-    }
-
-    @Override
-    public boolean onKeyMultiple(int keyCode, int count, KeyEvent event) {
-        return false;
-    }
 }
 

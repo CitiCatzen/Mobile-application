@@ -23,8 +23,9 @@
             android:paddingLeft="3dp"
             android:paddingRight="3dp"
             android:textSize="20sp"
-            android:lines="1"
-            android:maxLines="1"></EditText>
+            android:singleLine="true"
+            android:maxLines="1"
+            android:imeOptions="actionSearch"></EditText>
 
     </LinearLayout>
 
