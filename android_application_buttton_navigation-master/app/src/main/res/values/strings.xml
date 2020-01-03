@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">android_application_buttton_navigation</string>
-    <string name="title_recipes">Рецептики</string>
-    <string name="title_ingredients">Ингредиенты</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="recipe_descripton">Описание:</string>
-    <string name="recipe_ingredients">Ингредиенты:</string>
-    <string name="title_my_ingredients">Мои ингр.</string>
-</resources>
